@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView } from 'react-native';
 import Task from './components/tasks';
 
 export default function App() {
@@ -17,11 +17,17 @@ const completetask = (index) => {
 }
   return (
     <View style={styles.container}>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1
+        }}
+        keyboardShouldPersistTaps='handled'
+      >
       <View style={styles.taskswrapper}>
         <Text style={styles.sectiontitle}>Today's Tasks</Text>
         <View style={styles.items}>
           {
-            taskitems.map((items, index) => {
+            taskitems.map((item, index) => {
               return (
                 <TouchableOpacity key={index} onPress={() => completetask(index)}>
                   <Task text={item}/>
@@ -32,9 +38,11 @@ const completetask = (index) => {
           }
         </View>
       </View>
+      </ScrollView>
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : 'height'}
-        style={styles.writetaskwrapper}>
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.writetaskwrapper}
+      >
           <TextInput style={styles.input} placeholder={'New Task'} value={task} onChangeText={text => setTask(text)}/>
           <TouchableOpacity onPress={() => handleAddTask()}>
             <View style={styles.addwrapper}>
